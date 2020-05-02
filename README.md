@@ -16,9 +16,25 @@ Adapted from https://github.com/spujadas/lighttpd-docker
 ## Usage
 
 Prior to building the docker image, create a htdigest password called dotpasswd which specifies the name of the authorized <user>:
-- htdigest -c dotpasswd 'authorized users only' <user>
+
+      htdigest -c dotpasswd 'authorized users only' <user>
 
 The default configuration file uses mod_auth for challenge login. It's important that the "realm" specified in the auth.require block matches the realm specified in the htdigest command. In this case, "realm" is "authorized users only".
+
+Refer to  https://redmine.lighttpd.net/projects/lighttpd/wiki/HowToBasicAuth.
+
+> server.modules += ("mod_auth")
+> auth.backend = "htdigest"
+> auth.backend.htdigest.userfile = "/usr/local/etc/lighttpd/.passwd"
+
+> auth.require = ( "/" =>
+>   (
+>     "method" => "digest",
+>     "realm" => "authorized users only",
+>     "require" => "valid-user"
+>   )
+> )
+
 
 In the instructions that follow, replace:
 
@@ -61,7 +77,7 @@ Add the following lines in an existing or a new `docker-compose.yml` file:
 Then start a lighttpd container with:
 
 	$ sudo docker-compose up lighttpd
-
+	
 
 ## Build
 
