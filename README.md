@@ -1,6 +1,6 @@
 # lighttpd Docker image
 
-Security, speed, compliance, and flexibility -- all of these describe [lighttpd](http://www.lighttpd.net/)
+Adapted from https://github.com/spujadas/lighttpd-docker
 
 ### Contents
 
@@ -15,6 +15,11 @@ Security, speed, compliance, and flexibility -- all of these describe [lighttpd]
 
 ## Usage
 
+Prior to building the docker image, create a htdigest password called dotpasswd which specifies the name of the authorized <user>:
+- htdigest -c dotpasswd 'authorized users only' <user>
+
+The default configuration file uses mod_auth for challenge login. It's important that the "realm" specified in the auth.require block matches the realm specified in the htdigest command. In this case, "realm" is "authorized users only".
+
 In the instructions that follow, replace:
 
 - `<home-directory>` with the path of the local directory you want to serve content from.
@@ -24,6 +29,9 @@ In the instructions that follow, replace:
 	To make it easier to create custom configuration files, the default configuration files are included in the `etc/lighttpd` directory of the Git repository.
  
 -  `<http-port>` with the HTTP port you want the HTTP server to serve content to (e.g. `80` for the standard HTTP port if not already in use on the host).
+
+
+
 
 ### Start a container with Docker
 
