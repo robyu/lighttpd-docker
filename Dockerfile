@@ -28,4 +28,10 @@ EXPOSE 80
 VOLUME /var/www/localhost
 VOLUME /etc/lighttpd
 
+RUN mkdir /var/FTP
+VOLUME /var/FTP
+
+RUN mkdir /var/derived
+VOLUME /var/derived
+
 CMD ["start.sh"]
