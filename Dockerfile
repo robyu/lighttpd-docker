@@ -11,6 +11,12 @@ RUN apk add --update --no-cache \
 	bash \
   && rm -rf /var/cache/apk/*
 
+#
+# fix timezone
+# see https://serverfault.com/questions/683605/docker-container-time-timezone-will-not-reflect-changes
+RUN apk add --no-cache tzdata
+ENV TZ America/Los_Angeles
+
 ## workaround for bug preventing sync between VirtualBox and host
 # http://serverfault.com/questions/240038/lighttpd-broken-when-serving-from-virtualbox-shared-folder
 RUN echo server.network-backend = \"writev\" >> /etc/lighttpd/lighttpd.conf
