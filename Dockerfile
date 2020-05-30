@@ -27,6 +27,17 @@ RUN echo server.network-backend = \"writev\" >> /etc/lighttpd/lighttpd.conf
 #  htdigest -c passwd.digest 'authorized users only' ryu
 COPY passwd.digest /etc/lighttpd/passwd.digest
 
+#
+# create www user and group
+# match user id and group id with host
+# see https://vsupalov.com/docker-shared-permissions/
+ARG USER_ID
+ARG GROUP_ID
+RUN addgroup -g $GROUP_ID www
+#
+# -D = no password
+RUN adduser -G www -D -u $USER_ID www
+
 COPY etc/lighttpd/* /etc/lighttpd/
 COPY start.sh /usr/local/bin/
 EXPOSE 80
@@ -39,5 +50,7 @@ VOLUME /var/FTP
 
 RUN mkdir /var/derived
 VOLUME /var/derived
+
+VOLUME /var/log
 
 CMD ["start.sh"]
